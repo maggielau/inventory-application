@@ -10,7 +10,7 @@ let CategorySchema = new Schema(
 
 //virtual for category URL
 CategorySchema.virtual('url').get(function () {
-    return '/catalog/categories/' + this._id;
+    return '/catalog/category/' + this._id;
 });
 
 //export model

@@ -4,4 +4,22 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div(class='main')
+      div(class='hero') Hero image here
+      div(class='sidebar')
+        block sidebar
+          ul(class='sidebar-nav')
+            li 
+              a(href='/catalog') Home 
+            li
+              a(href='/catalog/products') All Products 
+            li 
+              a(href="/catalog/categories") All Product Categories 
+            li 
+              hr
+            li 
+              a(href="/catalog/product/create") Create New Product 
+            li 
+              a(href="/catalog/category/create") Create New Product Category 
+      div(class='content')
+        block content

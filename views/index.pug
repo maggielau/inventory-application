@@ -2,4 +2,15 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to the #{title} for the demo furniture online store.
+
+  h1 Inventory Status 
+
+  if error
+    p Error pulling inventory data 
+  else 
+    p The shop inventory currently consists of the following: 
+
+    ul 
+      li #[strong Products:] !{data.product_count}
+      li #[strong Product Categories:] !{data.category_count}

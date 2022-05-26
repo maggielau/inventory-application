@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h1= title + ": " + category.name 
+
+    p The following products are contained in this category:
+
+    ul
+        each product in category_products 
+            li 
+                a(href=product.url) #{product.title}
+        else 
+            li There are no products
+    

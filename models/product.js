@@ -22,7 +22,7 @@ let ProductSchema = new Schema(
 
 //virtual for product's URL
 ProductSchema.virtual('url').get(function () {
-    return '/catalog/products/' + this._id;
+    return '/catalog/product/' + this._id;
 });
 
 //export model
