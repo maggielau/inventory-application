@@ -133,20 +133,138 @@ exports.product_create_post = [
 
 //Display product delete form on GET
 exports.product_delete_get = function(req, res) {
-    res.send('Product delete GET');
+
+    Product.findById(req.params.id).exec(function (err, product) {
+        if (err) {return next(err);}
+        if (product == null) {
+            //no product found, redirect to product page
+            res.redirect('/catalog/products');
+        }
+        res.render('product_delete', { title: 'Delete Product', product: product });
+    });
+    
 };
 
 //Handle product delete on POST
 exports.product_delete_post = function(req, res) {
-    res.send('Product delete POST');
+
+    Product.findById(req.body.productid).exec(function (err, product) {
+        if (err) {return next(err);}
+        //delete the product
+        Product.findByIdAndRemove(product._id, function deleteProduct(err) {
+            if (err) { return next(err) }
+            //success
+            res.redirect('/catalog/products');
+        })
+    });
+
 };
 
 //Display product update form on GET
-exports.product_update_get = function(req, res) {
-    res.send('Product update GET');
+exports.product_update_get = function(req, res, next) {
+
+    async.parallel({
+        product: function(callback) {
+            Product.findById(req.params.id).populate('category').exec(callback);
+        },
+        categories: function(callback) {
+            Category.find(callback);
+        }
+    }, function(err, results) {
+        if (err) { return next(err) }
+        if (results.product == null) {
+            let err = new Error('Product not found');
+            err.status = 404;
+            return next(err);
+        }
+        //Found product to update
+        //Mark off product categories as checked
+        for (let i = 0; i<results.categories.length; i++) {
+            for (let j=0; j<results.product.category.length; j++) {
+                if (results.categories[i]._id.toString()===results.product.category[j]._id.toString()) {
+                    results.categories[i].checked='true';
+                }
+            }
+
+        }
+        res.render('product_form', { title: 'Update Product', categories: results.categories, product: results.product });
+    });
+
 };
 
 //Handle product update on POST
-exports.product_update_post = function(req, res) {
-    res.send('Product update POST');
-};
+exports.product_update_post = [
+
+    //Convert the category to an array
+    (req, res, next) => {
+        if(!(req.body.category instanceof Array)){
+            if (typeof req.body.category === 'undefined')
+                req.body.category = [];
+            else
+                req.body.category = new Array(req.body.category);
+        }
+        next();
+    },
+
+    //clean and validate incoming form data
+    body('title', 'Title must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('price', 'Price must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('description', 'Description must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('rate', 'Average Rating must not be empty').trim().isLength({ min: 1 }).escape(),
+    body('count', 'Rating Count must not be empty').trim().isLength({ min: 1 }).escape(),
+    body('category.*').escape(),
+
+    //create new product request
+    (req, res, next) => {
+
+        const errors = validationResult(req);
+
+        //create new product object
+        let product = new Product(
+            {
+                title: req.body.title,
+                price: req.body.price,
+                description: req.body.description,
+                rating: {
+                    rate: req.body.rate,
+                    count: req.body.count
+                },
+                category: (typeof req.body.category==='undefined') ? [] : req.body.category,
+                _id: req.params.id
+            }
+        );
+
+        //if there are errors, then re-render form page
+        if (!errors.isEmpty()) {
+
+            //retrieve a list of existing categories
+            Category.find({}, 'name')
+            .sort({name: 1})
+            .exec(function (err, list_categories) {
+                if (err) { return next(err); }
+
+                //mark the selected categories as checked
+                for (let i=0; i<list_categories.length; i++) {
+                    if (product.category.indexOf(list_categories[i]._id)>-1) {
+                        list_categories[i].checked='true';
+                    }
+                }
+
+                res.render('product_form', { title: 'Create New Product', categories: list_categories, product: product, errors: errors.array() });
+
+            });
+
+            return;
+
+        }
+        else {
+            //form data is valid, update the existing product
+            Product.findByIdAndUpdate(req.params.id, product, {}, function (err, theproduct) {
+                if (err) { return next(err); }
+                res.redirect(theproduct.url);
+            });
+        }
+
+    }
+    
+];

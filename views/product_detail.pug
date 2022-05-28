@@ -12,3 +12,10 @@ block content
   p #[strong Rating: ] #{product_detail.rating.rate} 
     | (#{product_detail.rating.count})
   p #[strong Description: ] #{product_detail.description}
+
+  hr
+
+  p 
+    a(href=product_detail.url+'/delete') Delete Product 
+  p 
+    a(href=product_detail.url+'/update') Update Product 

@@ -96,12 +96,51 @@ exports.category_create_post = [
 
 //display category delete form on get
 exports.category_delete_get = function(req, res) {
-    res.send('Category detele GET');
+    
+    async.parallel({
+        category: function(callback) {
+            Category.findById(req.params.id).exec(callback)
+        },
+        category_products: function(callback) {
+            Product.find({'category': req.params.id}).exec(callback)
+        }
+    }, function(err, results) {
+        if (err) {return next(err);}
+        if (results.category==null) {
+            res.redirect('/catalog/categories');
+        }
+        res.render('category_delete', { title: 'Delete Category', category: results.category, category_products: results.category_products });
+    });
+
 };
 
 //handle category delete on post
 exports.category_delete_post = function(req, res) {
-    res.send('Category delete POST');
+
+    async.parallel({
+        category: function(callback) {
+            Category.findById(req.body.categoryid).exec(callback)
+        },
+        category_products: function(callback) {
+            Product.find({'category': req.body.categoryid}).exec(callback)
+        }
+    }, function(err, results) {
+        if (err) {return next(err);}
+        if (results.category_products.length>0) {
+            //Category still contains products, re-render form with msg
+            res.render('category_delete', { title: 'Delete Category' , category: results.category, category_products: results.category_products});
+            return;
+        }
+        else {
+            //the category has no books, delete the object
+            Category.findByIdAndRemove(req.body.categoryid, function deleteCategory(err) {
+                if (err) { return next(err); }
+                //otherwise it is successful, redirect to category page
+                res.redirect('/catalog/categories');
+            })
+        }
+    });
+
 };
 
 //display category update form on GET
