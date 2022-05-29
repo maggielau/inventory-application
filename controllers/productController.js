@@ -81,6 +81,12 @@ exports.product_create_post = [
 
         const errors = validationResult(req);
 
+        let imagePath = "/images/placeholder-photo.png";
+        if (req.file!==undefined) {
+            let originalPath = req.file.path;
+            imagePath = originalPath.slice(6);
+        }
+
         //create new product object
         let product = new Product(
             {
@@ -91,9 +97,11 @@ exports.product_create_post = [
                     rate: req.body.rate,
                     count: req.body.count
                 },
-                category: req.body.category
+                category: req.body.category, 
+                image: imagePath
             }
         );
+
 
         //if there are errors, then re-render form page
         if (!errors.isEmpty()) {
@@ -122,7 +130,6 @@ exports.product_create_post = [
             //form data is valid, save the new product
             product.save(function (err) {
                 if (err) { return next(err); }
-
                 res.redirect(product.url);
             });
         }
@@ -214,10 +221,17 @@ exports.product_update_post = [
     body('count', 'Rating Count must not be empty').trim().isLength({ min: 1 }).escape(),
     body('category.*').escape(),
 
+    
     //create new product request
     (req, res, next) => {
 
         const errors = validationResult(req);
+
+        let imagePath = "/images/placeholder-photo.png";
+        if (req.file!==undefined) {
+            let originalPath = req.file.path;
+            imagePath = originalPath.slice(6);
+        }
 
         //create new product object
         let product = new Product(
@@ -230,7 +244,8 @@ exports.product_update_post = [
                     count: req.body.count
                 },
                 category: (typeof req.body.category==='undefined') ? [] : req.body.category,
-                _id: req.params.id
+                _id: req.params.id,
+                image: imagePath
             }
         );
 

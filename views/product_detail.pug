@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
 
+  p 
+    img(src=`${product_detail.image}`)
   p #[strong Price: ] #{product_detail.price}
   p #[strong Categories: ]
     span

@@ -1,5 +1,36 @@
 let express = require('express');
 let router = express.Router();
+const multer  = require('multer')
+
+// //Configuration for multer
+const multerStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/images/");
+    },
+    filename: (req, file, cb) => {
+        const ext = file.mimetype.split("/")[1];
+        let timestamp = new Date();
+        let name = file.originalname.split(".")[0] + timestamp.toJSON();
+        cb(null, `${name}.${ext}`);
+    }
+});
+
+const multerFilter = (req, file, cb) => {
+    let ext = file.mimetype.split("/")[1];
+    if (ext !== 'png' && ext !== 'jpg' && ext !== 'gif' && ext !== 'jpeg' && ext !== 'webp'){
+        cb(new Error("Not an image file!"), false);
+    }
+    else {
+        cb(null, true);
+    }
+}
+
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+});
+
+// const upload = multer({ dest: 'public/images/' })
 
 //require controller modules
 let product_controller = require('../controllers/productController');
@@ -14,7 +45,7 @@ router.get('/', product_controller.index);
 router.get('/product/create', product_controller.product_create_get);
 
 // POST request for creating product.
-router.post('/product/create', product_controller.product_create_post);
+router.post('/product/create', upload.single('photo'), product_controller.product_create_post);
 
 // GET request to delete product.
 router.get('/product/:id/delete', product_controller.product_delete_get);
@@ -26,7 +57,7 @@ router.post('/product/:id/delete', product_controller.product_delete_post);
 router.get('/product/:id/update', product_controller.product_update_get);
 
 // POST request to update product.
-router.post('/product/:id/update', product_controller.product_update_post);
+router.post('/product/:id/update', upload.single('photo'), product_controller.product_update_post);
 
 // GET request for one product.
 router.get('/product/:id', product_controller.product_detail);

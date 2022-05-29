@@ -16,7 +16,7 @@ let ProductSchema = new Schema(
             count: {
                 type: Number
             }
-        }
+        },
     }
 );
 
