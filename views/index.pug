@@ -6,6 +6,11 @@ block content
 
   h1 Inventory Status 
 
+  if currentUser 
+    p LOGGED IN 
+  else 
+    p NOT LOGGED IN
+
   if error
     p Error pulling inventory data 
   else 

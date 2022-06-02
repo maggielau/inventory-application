@@ -1,8 +1,11 @@
 let express = require('express');
 let router = express.Router();
-const multer  = require('multer')
+let multer  = require('multer');
 
-// //Configuration for multer
+
+
+
+//Configuration for multer
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public/images/");
@@ -30,11 +33,12 @@ const upload = multer({
     fileFilter: multerFilter
 });
 
-// const upload = multer({ dest: 'public/images/' })
+
 
 //require controller modules
 let product_controller = require('../controllers/productController');
 let category_controller = require('../controllers/categoryController');
+let auth_controller = require('../controllers/authController');
 
 //PRODUCT ROUTES
 
@@ -91,5 +95,19 @@ router.get('/category/:id', category_controller.category_detail);
 
 // GET request for list of all Genre.
 router.get('/categories', category_controller.category_list);
+
+
+/// AUTHENTICATION ROUTES ///
+
+router.get('/signup', auth_controller.signup_get);
+
+router.post('/signup', auth_controller.signup_post);
+
+router.get('/login', auth_controller.login_get);
+
+router.post('/login', auth_controller.login_post);
+
+router.get('/logout', auth_controller.logout);
+
 
 module.exports = router;

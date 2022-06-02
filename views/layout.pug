@@ -21,5 +21,20 @@ html
               a(href="/catalog/product/create") Create New Product 
             li 
               a(href="/catalog/category/create") Create New Product Category 
+            li 
+              hr
+            li
+              if currentUser 
+                a(href="/catalog/logout") Log Out 
+              else 
+                a(href="/catalog/login") Log In 
+            li 
+              if !currentUser 
+                a(href="/catalog/signup") Sign Up 
+
       div(class='content')
-        block content
+        if currentUser
+          block content
+        else 
+          h2 Please log in or sign up to continue
+        block publicContent
