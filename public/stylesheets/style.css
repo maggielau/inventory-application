@@ -239,7 +239,7 @@ textarea {
   .content {
     grid-column-start: 1;
     grid-column-end: 3;
-    /* font-size: 2vw !important; */
+    min-height: calc(100vh - 95px);
   }
 
   .hero {
@@ -252,6 +252,7 @@ textarea {
 
   body {
     font-size: 50px;
+    background-color: #1E1E1E;
   }
 
   .form-row input {
