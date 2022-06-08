@@ -3,21 +3,22 @@ extends layout
 block content
   h1= title
 
-  p 
-    img(src=`${product_detail.image}`)
-  p #[strong Price: ] #{product_detail.price}
-  p #[strong Categories: ]
-    span
-        each category in product_detail.category 
-            a(href=category.url) #{category.name} 
+  div.product-details
+    p 
+        img(src=`${product_detail.image}`)
+    p #[strong Price: ] #{product_detail.price}
+    p #[strong Categories: ]
+        span
+            each category in product_detail.category 
+                a(href=category.url) #{category.name} 
 
-  p #[strong Rating: ] #{product_detail.rating.rate} 
-    | (#{product_detail.rating.count})
-  p #[strong Description: ] #{product_detail.description}
+    p #[strong Rating: ] #{product_detail.rating.rate} 
+        | (#{product_detail.rating.count})
+    p #[strong Description: ] #{product_detail.description}
 
-  hr
-
-  p 
-    a(href=product_detail.url+'/delete') Delete Product 
-  p 
-    a(href=product_detail.url+'/update') Update Product 
+  div.product-details-options
+    hr
+    p 
+        a(href=product_detail.url+'/delete') Delete Product 
+    p 
+        a(href=product_detail.url+'/update') Update Product 

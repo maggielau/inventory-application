@@ -2,19 +2,14 @@ extends layout
 
 block content
   h1= title
-  p Welcome to the #{title} for the demo furniture online store.
+  p Welcome to the #{title} application for the demo online store "Furnico".
 
-  h1 Inventory Status 
-
-  if currentUser 
-    p LOGGED IN 
-  else 
-    p NOT LOGGED IN
+  h2 Inventory Status 
 
   if error
     p Error pulling inventory data 
   else 
-    p The shop inventory currently consists of the following: 
+    p The inventory currently consists of the following: 
 
     ul 
       li #[strong Products:] !{data.product_count}

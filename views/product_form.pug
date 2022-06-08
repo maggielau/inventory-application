@@ -13,9 +13,9 @@ block content
     div.form-row
       label(for='description') Description:
       textarea#description.form-control(type='text', placeholder='Enter product description here' name='description')
-        |  #{undefined===product ? '' : product.description}
+        | #{undefined===product ? '' : product.description}
     div.form-row
-      label(for='rate') Average Rating:
+      label(for='rate') Average Rating (0-5):
       input#rate.form-control(type='number', placeholder='3.9' name='rate' min='0' max ='5.0' value=(undefined===product ? '' : product.rating.rate) step=".1")
     div.form-row
       label(for='count') Count of Ratings:

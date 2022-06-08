@@ -34,6 +34,18 @@ exports.product_list = function (req, res, next) {
         });
 };
 
+//Export JSON of all products
+exports.product_list_api = function (req, res, next) {
+    Product.find({}, 'category title price description image')
+        .sort({category: 1})
+        .populate('category')
+        .exec(function (err, list_products) {
+            if (err) { return next(err); }
+            //Successful, so render
+            res.json(list_products);
+        });
+};
+
 //Display detail page for a specific product
 exports.product_detail = function (req, res, next) {
     Product.findById(req.params.id)
@@ -51,7 +63,7 @@ exports.product_create_get = function(req, res, next) {
         .sort({name: 1})
         .exec(function (err, list_categories) {
             if (err) { return next(err); }
-            res.render('product_form', { title: 'Create New Proudct', categories: list_categories});
+            res.render('product_form', { title: 'Create New Product', categories: list_categories});
         });
 };
 

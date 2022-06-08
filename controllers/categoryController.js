@@ -15,6 +15,16 @@ exports.category_list = function(req, res, next) {
         })
 };
 
+//Export JSON of all categories
+exports.category_list_api = function(req, res, next) {
+    Category.find({}, 'name')
+        .sort({name: 1})
+        .exec(function (err, list_categories) {
+            if (err) { return next(err); }
+            res.json(list_categories);
+        });
+};
+
 //Display detail page for specific category
 exports.category_detail = function(req, res) {
     async.parallel({

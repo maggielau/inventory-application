@@ -5,12 +5,18 @@
 }
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  background-color: #E0DFE2;
 }
 
 a {
-  color: #00B7FF;
+  color: #FFF;
   text-decoration: none;
+}
+
+a:hover {
+  color: #a8a8a8;
 }
 
 li {
@@ -24,17 +30,52 @@ h1 {
 
 .main {
   display: grid;
-  grid-template-columns: 300px auto;
+  grid-template-columns: 300px 700px;
+  width: 1000px;
+  margin: auto;
 }
 
 .hero {
   grid-column-start: 1;
   grid-column-end: span 3;
-  background-color: blue;
+  background-color: #6B6840;
+}
+
+.hero img {
+  width: 100%;
+}
+
+.logobar {
+  grid-column-start: 1;
+  grid-column-end: span 3;
+  background-color: #6B6840;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 32px;
+  color: #FFF;
+  height: 95px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 32px;
+  position: relative;
+  top: 2px;
+  margin-left: 10px;
 }
 
 .sidebar {
   padding: 15px;
+  background-color: #1E1E1E;
+  grid-column-start: 1;
+  grid-column-end: 2;
 }
 
 .sidebar a {
@@ -42,6 +83,204 @@ h1 {
   margin: 10px 0;
 }
 
+hr { 
+  height: 1px;
+  background-color: #6B6840;
+  border: none;
+  margin: 20px 0;
+}
+
 .content {
-  margin-left: 25px;
+  padding: 15px;
+  background-color: #FFF;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  min-height: calc(100vh - 344px - 95px - 35px)
+}
+
+.content a {
+  color: #668a51;
+}
+
+.content a:hover {
+  color: #575757;
+}
+
+.content a:active {
+  color: #000;
+}
+
+.footer {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  background-color: #1E1E1E;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFF;
+  height: 35px;
+}
+
+.footer img {
+  width: 20px;
+  margin-right: 5px;
+}
+
+button {
+  background-color: #668a51;
+  border: none;
+  padding: 6px;
+  color: #FFF;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #575757;
+}
+
+button:active {
+  background-color: #000;
+}
+
+h2 {
+  margin: 20px 0;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.form-row label {
+  margin-bottom: 5px;
+}
+
+.form-row input {
+  padding: 4px;
+}
+
+textarea {
+  resize: none;
+  height: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.checkbox-input {
+  margin-right: 5px;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-details img {
+  width: min(70vw, 400px);
+  margin-bottom: 20px;
+}
+
+/* Mobile Nav */
+.burger-menu {
+  display: none;
+  cursor: pointer;
+}
+
+.overlay-nav {
+  height: 0%;
+  width: 100%;
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0, 0.9); 
+  overflow-x: hidden; 
+  transition: 0.5s;
+}
+
+.overlay-links {
+  position: relative;
+  top: 25%; 
+  width: 100%; 
+  text-align: center; 
+  margin-top: 30px;   
+}
+
+
+.overlay-nav a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 60px;
+  color: #FFF;
+  display: block; 
+  transition: 0.3s; 
+}
+
+.overlay-nav .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+  color: #FFF;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+  .burger-menu {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 50px;
+  }
+
+  .content {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    /* font-size: 2vw !important; */
+  }
+
+  .hero {
+    display: none;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  body {
+    font-size: 50px;
+  }
+
+  .form-row input {
+    font-size: 50px;
+  }
+
+  textarea {
+    font-size: 30px;
+    height: 100px;
+  }
+
+  input[type=checkbox] {
+    min-height: 40px;
+    min-width: 40px;
+  }
+
+  button {
+    font-size: 50px;
+  }
+
+  .logo h1 {
+    font-size: 50px;
+  }
+
+  .logo img {
+    width: 50px;
+  }
+
+  .footer {
+    font-size: 20px;
+  }
 }

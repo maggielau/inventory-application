@@ -1,11 +1,34 @@
 doctype html
+
+script.
+  function openNav () {
+    document.getElementById("mobile-nav").style.height = "100%";
+  }
+
+  function closeNav () {
+    document.getElementById("mobile-nav").style.height = "0%";
+  }
+
 html
   head
     title= title
+    link(rel="icon", type="image/x-icon", href="/images/layout/logo.ico")
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin)
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
   body
     div(class='main')
-      div(class='hero') Hero image here
+      div(class='hero')
+        img(src='/images/layout/hero.webp')
+      div(class='logobar')
+        div(class='logo')
+          a(href='/catalog')
+            img(src='/images/layout/logo.svg')
+          h1 Furnico
+        div(class="burger-menu" onClick="openNav()")
+          i(class="fa fa-bars")
       div(class='sidebar')
         block sidebar
           ul(class='sidebar-nav')
@@ -38,3 +61,27 @@ html
         else 
           h2 Please log in or sign up to continue
         block publicContent
+
+      div(class="footer")
+        a(href="https://github.com/maggielau", target="_blank")
+          img(src="/images/layout/github-logo-small-white.svg")
+        | Maggie Lau
+    
+    div(class="overlay-nav", id="mobile-nav")
+        span(class="close-btn", onClick="closeNav()")
+          |&times;
+
+        div(class="overlay-links")
+          a(href='/catalog') Home 
+          a(href='/catalog/products') All Products 
+          a(href="/catalog/categories") All Product Categories 
+          hr
+          a(href="/catalog/product/create") Create New Product 
+          a(href="/catalog/category/create") Create New Product Category 
+          hr
+          if currentUser 
+            a(href="/catalog/logout") Log Out 
+          else 
+            a(href="/catalog/login") Log In 
+          if !currentUser 
+            a(href="/catalog/signup") Sign Up 
